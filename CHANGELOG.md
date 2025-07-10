@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.4]
+
+Fixed references in assembly definition.
+
+## [0.0.3]
+
+Added missing assembly definition.
+
 ## [0.0.2]
 
 Added missing meta files.
