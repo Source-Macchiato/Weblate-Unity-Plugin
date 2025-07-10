@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.0]
+
+Added support for Json and PO formats
+
 ## [0.0.4]
 
 Fixed references in assembly definition.

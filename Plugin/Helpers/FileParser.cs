@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using UnityEngine;
+using Newtonsoft.Json;
 
 namespace Weblate.Plugin.Helpers
 {
@@ -132,17 +133,66 @@ namespace Weblate.Plugin.Helpers
         // Json
         private static Dictionary<string, string> ParseJson(string content)
         {
-            var dict = new Dictionary<string, string>();
-
-            return dict;
+            try
+            {
+                return JsonConvert.DeserializeObject<Dictionary<string, string>>(content)
+                       ?? new Dictionary<string, string>();
+            }
+            catch (JsonException e)
+            {
+                Debug.LogError($"[Weblate] Failed to parse JSON: {e.Message}");
+                return new Dictionary<string, string>();
+            }
         }
 
         // PO
         private static Dictionary<string, string> ParsePo(string content)
         {
             var dict = new Dictionary<string, string>();
+            using var reader = new StringReader(content);
+
+            string line;
+            string currentId = null;
+            string currentStr = null;
+            bool inHeader = true;
+
+            while ((line = reader.ReadLine()) != null)
+            {
+                line = line.Trim();
+
+                // Ignore comments
+                if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#"))
+                    continue;
+
+                if (line.StartsWith("msgid "))
+                {
+                    currentId = ParsePoQuote(line.Substring(6).Trim());
+                    if (string.IsNullOrEmpty(currentId))
+                    {
+                        // Empty header, skip
+                        inHeader = true;
+                        currentId = null;
+                        continue;
+                    }
+                    inHeader = false;
+                }
+                else if (line.StartsWith("msgstr ") && !inHeader && currentId != null)
+                {
+                    currentStr = ParsePoQuote(line.Substring(7).Trim());
+                    dict[currentId] = currentStr;
+                    currentId = null;
+                    currentStr = null;
+                }
+            }
 
             return dict;
+        }
+
+        private static string ParsePoQuote(string input)
+        {
+            if (input.StartsWith("\"") && input.EndsWith("\""))
+                return input.Substring(1, input.Length - 2).Replace("\\n", "\n");
+            return input;
         }
     }
 }
