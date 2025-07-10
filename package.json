@@ -1,0 +1,32 @@
+{
+  "name": "com.sourcemacchiato.weblate.unity-plugin",
+  "displayName": "Weblate",
+  "version": "0.0.1",
+  "unity": "2021.3",
+  "description": "Translate and localize your Unity games using Weblate.",
+  "dependencies": {
+    "com.unity.localization": "1.5.4",
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+  },
+  "keywords": [
+    "weblate",
+    "localization",
+    "unity localization",
+    "weblate unity"
+  ],
+  "homepage": "https://github.com/Source-Macchiato/Weblate-Unity-Plugin",
+  "documentationUrl": "https://github.com/Source-Macchiato/Weblate-Unity-Plugin#readme",
+  "bugs": {
+    "url": "https://github.com/Source-Macchiato/Weblate-Unity-Plugin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Source-Macchiato/Weblate-Unity-Plugin.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Source Macchiato",
+    "email": "contact@sourcemacchiato.com",
+    "url": "https://sourcemacchiato.com"
+  }
+}
